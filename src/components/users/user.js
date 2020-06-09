@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Spinner from '../../layout/Spinner';
 import { Link } from 'react-router-dom';
+import Repo  from '../repos/Repo';
 
 class User extends Component {
 
@@ -23,8 +24,8 @@ class User extends Component {
     
 
     render() {
-        console.log("user details", this.props.user);
-        console.log("user repos", this.props.repos);
+        //console.log("user details", this.props.user);
+       // console.log("user repos", this.props.repos);
         const {
              name,
              company,
@@ -42,7 +43,7 @@ class User extends Component {
         
         } = this.props.user;
 
-        const { loading } = this.props;
+        const { loading, repos } = this.props;
         if (loading) {
             return <Spinner />
         }
@@ -70,7 +71,7 @@ class User extends Component {
                                 <p>{bio}</p>
                             </Fragment>
                         )}
-                        <a target="_blank" href={html_url} className="btn btn-dark my-1">Visit GitHub Profile</a>
+                        <a href={html_url} className="btn btn-dark my-1">Visit GitHub Profile</a>
                         <ul>
                             <li>
                                 {login && <Fragment>
@@ -100,6 +101,7 @@ class User extends Component {
                     <div className="badge badge-danger">Public Gist : {public_gists}</div>
 
                 </div>
+                <Repo repos={repos} />
             </Fragment>
             
         )
