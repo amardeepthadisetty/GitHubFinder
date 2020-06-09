@@ -9,6 +9,7 @@ class User extends Component {
     componentDidMount(){
         //getUser = () => {
             this.props.getUser(this.props.match.params.login);
+            this.props.getUserRepos(this.props.match.params.login);
         //}
 
     }
@@ -16,12 +17,14 @@ class User extends Component {
     static propTypes = {
         loading :PropTypes.bool.isRequired,
         user : PropTypes.object.isRequired,
-        getUser : PropTypes.func.isRequired
+        getUser : PropTypes.func.isRequired,
+        getUserRepos: PropTypes.func.isRequired
     }
     
 
     render() {
         console.log("user details", this.props.user);
+        console.log("user repos", this.props.repos);
         const {
              name,
              company,
@@ -34,7 +37,7 @@ class User extends Component {
              followers,
              following,
              public_repos,
-             public_gist,
+             public_gists,
              hireable
         
         } = this.props.user;
@@ -94,7 +97,7 @@ class User extends Component {
                     <div className="badge badge-primary">Followers : {followers}</div>
                     <div className="badge badge-success">Following : {following}</div>
                     <div className="badge badge-danger">Public Repos : {public_repos}</div>
-                    <div className="badge badge-danger">Public Gist : {public_gist}</div>
+                    <div className="badge badge-danger">Public Gist : {public_gists}</div>
 
                 </div>
             </Fragment>
