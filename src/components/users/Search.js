@@ -1,50 +1,46 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useContext } from 'react';
+//import PropTypes from 'prop-types';
+import githubContext from '../../context/github/githubContext';
+import alertContext from '../../context/alert/alertContext';
 
-class Search extends Component {
-    state = {
-        text : ''
+const Search = ({ alertUser }) => {
+    const context = useContext(githubContext);
+    const alertContextRef = useContext(alertContext);
+    const [text, setText] = useState('');
+    
+    const onChange = (e) => {
+        setText( e.target.value );
     }
 
-    static propTypes = {
-        searchUsers : PropTypes.func.isRequired,
-        clearUsers : PropTypes.func.isRequired,
-        isShow : PropTypes.bool.isRequired,
-    }
-
-    onChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    onSubmit = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
-        if (this.state.text === '') {
-            this.props.alertUser('Please enter something in search field', 'light');
+        if (text === '') {
+            alertContextRef.alertUser('Please enter something in search field', 'light');
         } else {
             
             //console.log("the text in the state is: ",this.state.text);
             //the below line is passing the state from child to parent
             //that is from search to app.
             //this is called prop drilling
-            this.props.searchUsers(this.state.text);
-    
-            this.setState({ text : ''});
+            context.searchUsersFunc(text);
+            
+            setText('');
         }
     }
 
-    render() {
-        const { isShow, clearUsers } = this.props;
+    //render() {
+        //const { isShow, clearUsers } = this.props;
         return (
-            <form onSubmit={this.onSubmit} className="form">
+            <form onSubmit={onSubmit} className="form">
                 <input type="text" 
-                name="text" onChange={this.onChange}
+                name="text" onChange={onChange}
                  placeholder="Search for users"
-                  value={this.state.text} />
+                  value={text} />
                 <input type="submit" value="search" className="btn btn-dark btn-block btn-sm" />
 
                 {
-                    isShow ? (
-                        <input type="button" value="Clear" onClick={() => clearUsers()} className="btn btn-light btn-block btn-sm" />
+                    context.users.length>0 ? (
+                        <input type="button" value="Clear" onClick={() => context.clearUsers()} className="btn btn-light btn-block btn-sm" />
                     ) 
                     : '' 
                 }
@@ -53,7 +49,8 @@ class Search extends Component {
                 
             </form>
         )
-    }
+    //}
 }
+
 
 export default Search;
